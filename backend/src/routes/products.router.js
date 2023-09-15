@@ -2,33 +2,30 @@ const express = require('express');
 
 const router = express.Router();
 
-const { productModel } = require('../models');
-
-const { 
-  HTTP_OK_STATUS, HTTP_CREATED_STATUS, HTTP_NO_CONTENT_STATUS, 
-} = require('../consts/http-status-codes');
+const productsController = require('../controllers/products.controller');
 
 // rotas /products
 
-router.get('/', async (req, res) => {
-  const products = await productModel.getAll();
-  res.status(HTTP_OK_STATUS).json(products);
-});
+router.get('/', productsController.getAll);
 
-router.get('/:id', async (req, res) => {
-  res.status(HTTP_OK_STATUS).json({ message: 'product id' });
-});
+router.get('/:id', productsController.getById);
 
-router.post('/', async (req, res) => {
-  res.status(HTTP_CREATED_STATUS).json({ message: 'created product' });
-});
+// app.get('/orders', ordersController.getAll);
 
-router.put('/:id', async (req, res) => {
-  res.status(HTTP_OK_STATUS).json({ message: 'updated product' });
-});
+// app.get('/orders/:id', ordersController.getById);
 
-router.delete('/:id', async (req, res) => {
-  res.status(HTTP_NO_CONTENT_STATUS).end();
-});
+// app.post('/orders', validCreatePizza, ordersController.create);
+
+// router.post('/', async (req, res) => {
+//   res.status(HTTP_CREATED_STATUS).json({ message: 'created product' });
+// });
+
+// router.put('/:id', async (req, res) => {
+//   res.status(HTTP_OK_STATUS).json({ message: 'updated product' });
+// });
+
+// router.delete('/:id', async (req, res) => {
+//   res.status(HTTP_NO_CONTENT_STATUS).end();
+// });
 
 module.exports = router;
