@@ -11,8 +11,7 @@ const {
 // rotas /products
 
 router.get('/', async (req, res) => {
-  const products = await productModel.findAll();
-  // res.status(HTTP_OK_STATUS).json({ message: 'products' });
+  const products = await productModel.getAll();
   res.status(HTTP_OK_STATUS).json(products);
 });
 
