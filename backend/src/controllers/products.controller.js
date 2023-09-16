@@ -2,7 +2,7 @@ const productsService = require('../services/products.service');
 
 const { 
   HTTP_OK_STATUS, HTTP_NOT_FOUND_STATUS,
-} = require('../consts/http-status-codes');
+} = require('../consts/httpStatusCodes');
 
 const getAll = async (req, res) => {
   const products = await productsService.getAll();

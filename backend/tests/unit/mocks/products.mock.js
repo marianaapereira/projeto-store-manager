@@ -13,4 +13,6 @@ const products = [
   },
 ];
 
-module.exports = { products };
+const notFoundError = { message: 'Product not found' };
+
+module.exports = { products, notFoundError };
