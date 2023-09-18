@@ -15,22 +15,20 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  const sale = await salesModel.getById(id);
+  const saleItemsArray = await salesModel.getById(id);
 
-  if (!sale) {
+  if (saleItemsArray.length === 0) {
     throw new Error('Sale not found');
   }
 
-  console.log(sale);
+  const saleItems = saleItemsArray
+  .map(({ date, product_id: productId, quantity }) => ({
+      date,
+      productId,
+      quantity,
+    }));
 
-  const { sale_id: saleId, date, product_id: productId, quantity } = sale;
-
-  return {
-    saleId,
-    date,
-    productId,
-    quantity,
-  };
+  return saleItems;
 };
 
 module.exports = {

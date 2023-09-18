@@ -1,5 +1,3 @@
-// arquivo que retorna os status http e/ou mensagens de erro
-
 const salesService = require('../services/sales.service');
 
 const {
@@ -15,10 +13,6 @@ const getById = async (req, res) => {
   try {
     const { id } = req.params;
     const sale = await salesService.getById(id);
-
-    if (!sale) {
-      throw new Error('Sale not found');
-    }
 
     return res.status(HTTP_OK_STATUS).json(sale);
   } catch ({ message }) {

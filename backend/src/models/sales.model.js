@@ -10,11 +10,11 @@ const getAll = async () => {
 };
 
 const getById = async (saleId) => {
-  const query = `SELECT * FROM sales 
-  INNER JOIN sales_products ON sales.id = sales_products.sale_id
+  const query = `SELECT * FROM sales_products 
+  INNER JOIN sales ON sales.id = sales_products.sale_id
   WHERE id = ${saleId}`;
 
-  const [[sale]] = await connection.execute(query);
+  const [sale] = await connection.execute(query);
 
   return sale;
 };

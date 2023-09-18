@@ -1,5 +1,3 @@
-// arquivo que retorna os status http e/ou mensagens de erro
-
 const productsService = require('../services/products.service');
 
 const { 
@@ -15,10 +13,6 @@ const getById = async (req, res) => {
   try {
     const { id } = req.params;
     const product = await productsService.getById(id);
-
-    if (!product) {
-      throw new Error('Product not found');
-    }
 
     return res.status(HTTP_OK_STATUS).json(product);
   } catch ({ message }) {
