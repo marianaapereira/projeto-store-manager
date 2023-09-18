@@ -10,7 +10,7 @@ router.get('/', productsController.getAll);
 
 router.get('/:id', productsController.getById);
 
-// app.get('/orders', ordersController.getAll);
+router.post('/', productsController.registerProduct);
 
 // app.get('/orders/:id', ordersController.getById);
 
