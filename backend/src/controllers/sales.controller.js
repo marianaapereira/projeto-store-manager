@@ -1,26 +1,26 @@
 // arquivo que retorna os status http e/ou mensagens de erro
 
-const productsService = require('../services/products.service');
+const salesService = require('../services/sales.service');
 
-const { 
+const {
   HTTP_OK_STATUS, HTTP_NOT_FOUND_STATUS,
 } = require('../consts/httpStatusCodes');
 
 const getAll = async (_req, res) => {
-  const products = await productsService.getAll();
-  return res.status(HTTP_OK_STATUS).json(products);
+  const sales = await salesService.getAll();
+  return res.status(HTTP_OK_STATUS).json(sales);
 };
 
 const getById = async (req, res) => {
   try {
     const { id } = req.params;
-    const product = await productsService.getById(id);
+    const sale = await salesService.getById(id);
 
-    if (!product) {
-      throw new Error('Product not found');
+    if (!sale) {
+      throw new Error('Sale not found');
     }
 
-    return res.status(HTTP_OK_STATUS).json(product);
+    return res.status(HTTP_OK_STATUS).json(sale);
   } catch ({ message }) {
     return res.status(HTTP_NOT_FOUND_STATUS).json({ message });
   }

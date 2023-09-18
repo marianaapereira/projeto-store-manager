@@ -1,18 +1,14 @@
-// const express = require('express');
+const express = require('express');
 
-// const router = express();
+const router = express.Router();
 
-// const { 
-//   HTTP_OK_STATUS, HTTP_CREATED_STATUS, HTTP_NO_CONTENT_STATUS, 
-// } = require('../consts/http-status-codes');
+const salesController = require('../controllers/sales.controller');
 
-// router.get('/', async (req, res) => {
-//   res.status(HTTP_OK_STATUS).json({ message: 'sales' });
-// });
+// rotas /sales
 
-// router.get('/:id', async (req, res) => {
-//   res.status(HTTP_OK_STATUS).json({ message: 'sale id' });
-// });
+router.get('/', salesController.getAll);
+
+router.get('/:id', salesController.getById);
 
 // router.post('/', async (req, res) => {
 //   res.status(HTTP_CREATED_STATUS).json({ message: 'created sale' });
@@ -22,4 +18,4 @@
 //   res.status(HTTP_NO_CONTENT_STATUS).end();
 // });
 
-// module.exports = router;
+module.exports = router;

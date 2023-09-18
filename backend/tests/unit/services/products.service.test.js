@@ -25,18 +25,6 @@ describe('O service de products', function () {
     expect(product).to.be.equal(productsMock.products[2]);
   });
 
-  // it('retorna um erro se não encontrar o produto pelo id na rota', async function () {
-  //   // arrange
-  //   // const productId = 5;
-  //   sinon.stub(productsModel, 'getById').resolves(productsMock.notFoundError);
-    
-  //   // act
-
-  //   // assert
-  //   expect(() => productsService.getById()).to.throw(Error, 'Product not found');
-  //   // expect(getProduct()).to.be.equal(productsMock.notFoundError);
-  // });
-
   it('retorna a mensagem de erro correta se não encontrar o produto pelo id na rota', async function () {
     // arrange
     const productId = 5;
