@@ -4,13 +4,15 @@ const router = express.Router();
 
 const productsController = require('../controllers/products.controller');
 
+const productsMiddlewares = require('../middlewares/products.middlewares');
+
 // rotas /products
 
 router.get('/', productsController.getAll);
 
 router.get('/:id', productsController.getById);
 
-router.post('/', productsController.registerProduct);
+router.post('/', productsMiddlewares.validateProductName, productsController.registerProduct);
 
 // app.get('/orders/:id', ordersController.getById);
 
