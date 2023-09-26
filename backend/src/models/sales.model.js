@@ -19,7 +19,24 @@ const getById = async (saleId) => {
   return sale;
 };
 
+const registerSale = async (saleProducts) => {
+  const insertionSale = 'INSERT INTO sales (date) VALUES (CURRENT_TIMESTAMP)';
+  const [{ insertId }] = await connection.execute(insertionSale);
+
+  saleProducts.forEach(async ({ productId, quantity }) => {
+    const insertion = `INSERT INTO sales_products (sale_id, product_id, quantity)
+      VALUES (${insertId}, ${productId}, ${quantity})`;
+    await connection.execute(insertion);
+  });
+
+  const query = `SELECT product_id, quantity FROM sales_products WHERE sale_id = ${insertId}`;
+  const [itemsSold] = await connection.execute(query);
+
+  return { id: insertId, itemsSold };
+};
+
 module.exports = {
   getAll,
   getById,
+  registerSale,
 };

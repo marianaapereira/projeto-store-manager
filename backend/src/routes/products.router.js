@@ -14,14 +14,6 @@ router.get('/:id', productsController.getById);
 
 router.post('/', productsMiddlewares.validateProductName, productsController.registerProduct);
 
-// app.get('/orders/:id', ordersController.getById);
-
-// app.post('/orders', validCreatePizza, ordersController.create);
-
-// router.post('/', async (req, res) => {
-//   res.status(HTTP_CREATED_STATUS).json({ message: 'created product' });
-// });
-
 // router.put('/:id', async (req, res) => {
 //   res.status(HTTP_OK_STATUS).json({ message: 'updated product' });
 // });

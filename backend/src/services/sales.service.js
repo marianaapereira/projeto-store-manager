@@ -17,7 +17,7 @@ const getAll = async () => {
 const getById = async (id) => {
   const saleItemsArray = await salesModel.getById(id);
 
-  if (saleItemsArray.length === 0) {
+  if (!saleItemsArray || saleItemsArray.length === 0) {
     throw new Error('Sale not found');
   }
 
@@ -31,7 +31,10 @@ const getById = async (id) => {
   return saleItems;
 };
 
+const registerSale = async (saleProducts) => salesModel.registerSale(saleProducts);
+
 module.exports = {
   getAll,
   getById,
+  registerSale,
 };
