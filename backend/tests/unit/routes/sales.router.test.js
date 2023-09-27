@@ -5,8 +5,8 @@ const { expect } = chai;
 
 const app = require('../../../src/app');
 
-describe('A rota /products', function () {
-  it('deve retornar status 200 ao exibir todos os produtos', function (done) {
+describe('A rota /sales', function () {
+  it('deve retornar status 200 ao exibir todas as vendas', function (done) {
     const server = http.createServer(app);
 
     server.listen(0, function () {
@@ -14,7 +14,7 @@ describe('A rota /products', function () {
       const requestOptions = {
         hostname: 'localhost',
         port,
-        path: '/products',
+        path: '/sales',
         method: 'GET',
       };
 
@@ -28,7 +28,7 @@ describe('A rota /products', function () {
     });
   });
 
-  it('deve retornar status 404 ao tentar acessar um produto inexistente', function (done) {
+  it('deve retornar status 404 ao tentar acessar uma venda inexistente', function (done) {
     const server = http.createServer(app);
 
     server.listen(0, function () {
@@ -36,7 +36,7 @@ describe('A rota /products', function () {
       const requestOptions = {
         hostname: 'localhost',
         port,
-        path: '/products/10',
+        path: '/sales/10',
         method: 'GET',
       };
 

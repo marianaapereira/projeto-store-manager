@@ -14,7 +14,7 @@ const { expect } = chai;
 describe('No controller de products', function () {
   afterEach(sinon.restore);
 
-  it('deve retornar todos os produtos com sucesso', async function () {
+  it('a função getAll deve retornar todos os produtos corretamente', async function () {
     sinon.stub(productsService, 'getAll').resolves(productsMock.products);
 
     const res = {
@@ -30,7 +30,7 @@ describe('No controller de products', function () {
     await productsController.getAll({}, res);
   });
 
-  it('deve retornar um produto com sucesso', async function () {
+  it('a função getById deve retornar o produto correto passado por parâmetro', async function () {
     // Configurar um stub ou mock para productsService.getById
     sinon.stub(productsService, 'getById').resolves({ id: 1, name: 'Produto 1' });
 

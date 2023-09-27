@@ -26,14 +26,11 @@ describe('O service de products', function () {
   });
 
   it('retorna a mensagem de erro correta se não encontrar o produto pelo id na rota', async function () {
-    // arrange
     const productId = 5;
     sinon.stub(productsModel, 'getById').resolves(productsMock.notFoundError);
 
-    // act
     const product = await productsService.getById(productId);
 
-    // assert
     expect(product).to.be.equal(productsMock.notFoundError);
   });
 });
