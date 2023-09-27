@@ -31,7 +31,18 @@ const getById = async (id) => {
   return saleItems;
 };
 
-const registerSale = async (saleProducts) => salesModel.registerSale(saleProducts);
+const registerSale = async (saleProducts) => { 
+  const createdSale = await salesModel.registerSale(saleProducts);
+
+  const itemsSold = createdSale.itemsSold.map(({ product_id: productId, quantity }) => ({
+    productId,
+    quantity,
+  }));
+
+  const newSale = { ...createdSale, itemsSold };
+
+  return newSale;
+};
 
 module.exports = {
   getAll,

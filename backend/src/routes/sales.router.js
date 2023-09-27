@@ -12,8 +12,4 @@ router.get('/:id', salesController.getById);
 
 router.post('/', salesController.registerSale);
 
-// router.delete('/:id', async (req, res) => {
-//   res.status(HTTP_NO_CONTENT_STATUS).end();
-// });
-
 module.exports = router;

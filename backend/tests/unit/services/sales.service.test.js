@@ -9,7 +9,7 @@ const salesService = require('../../../src/services/sales.service');
 
 chai.use(sinonChai);
 
-describe('No service de sales:', function () {
+describe('No service de sales', function () {
   afterEach(sinon.restore);
 
   it('a função getById retorna corretamente os itens da venda passada como parâmetro', async function () {

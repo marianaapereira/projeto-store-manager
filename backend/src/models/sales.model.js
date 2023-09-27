@@ -19,20 +19,37 @@ const getById = async (saleId) => {
   return sale;
 };
 
+// req 5
+
+const createNewSale = async () => {
+  const insertion = 'INSERT INTO sales (date) VALUES (CURRENT_TIMESTAMP)';
+  const [{ insertId }] = await connection.execute(insertion);
+
+  return insertId;
+};
+
+const getInsertedSaleProducts = async (saleId) => {
+  const query = `SELECT product_id, quantity FROM sales_products WHERE sale_id = ${saleId}`;
+  const [insertedSaleProducts] = await connection.execute(query);
+
+  return insertedSaleProducts;
+};
+
 const registerSale = async (saleProducts) => {
-  const insertionSale = 'INSERT INTO sales (date) VALUES (CURRENT_TIMESTAMP)';
-  const [{ insertId }] = await connection.execute(insertionSale);
+  const saleId = await createNewSale();
 
-  saleProducts.forEach(async ({ productId, quantity }) => {
-    const insertion = `INSERT INTO sales_products (sale_id, product_id, quantity)
-      VALUES (${insertId}, ${productId}, ${quantity})`;
-    await connection.execute(insertion);
-  });
+  const insertions = saleProducts.map(
+      async ({ productId, quantity }) => {
+        const insertion = `INSERT INTO sales_products (sale_id, product_id, quantity)
+            VALUES (${saleId}, ${productId}, ${quantity})`;
+        await connection.execute(insertion); 
+    },
+  );
 
-  const query = `SELECT product_id, quantity FROM sales_products WHERE sale_id = ${insertId}`;
-  const [itemsSold] = await connection.execute(query);
+  await Promise.all(insertions);
+  const insertedSaleProducts = await getInsertedSaleProducts(saleId);
 
-  return { id: insertId, itemsSold };
+  return { id: saleId, itemsSold: insertedSaleProducts };
 };
 
 module.exports = {
