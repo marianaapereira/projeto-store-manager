@@ -28,7 +28,7 @@ describe('A rota /products', function () {
     });
   });
 
-  it('deve retornar status 404 ao fazer uma requisição GET para uma rota inexistente', function (done) {
+  it('deve retornar status 404 ao fazer uma requisição GET para uma rota de produto inexistente', function (done) {
     const server = http.createServer(app);
 
     server.listen(0, function () {

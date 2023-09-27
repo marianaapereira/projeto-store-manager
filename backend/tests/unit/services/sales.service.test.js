@@ -1,41 +1,44 @@
-// const sinon = require('sinon');
-// const chai = require('chai');
-// const sinonChai = require('sinon-chai');
+const sinon = require('sinon');
+const chai = require('chai');
+const sinonChai = require('sinon-chai');
 
-// const { expect } = chai;
+const { expect } = chai;
 
-// const salesMock = require('../mocks/sales.mock');
-// const salesModel = require('../../../src/models/sales.model');
-// const salesService = require('../../../src/services/sales.service');
+const salesMock = require('../mocks/sales.mock');
+const salesService = require('../../../src/services/sales.service');
 
-// chai.use(sinonChai);
+chai.use(sinonChai);
 
-// describe('O service de sales', function () {
-//   afterEach(sinon.restore);
+describe('No service de sales:', function () {
+  afterEach(sinon.restore);
 
-//   it('exibe a venda correta de acordo com o id na url', async function () {
-//     // arrange
-//     const saleId = 2;
-//     sinon.stub(salesModel, 'getById').resolves(salesMock.sale);
-//     console.log(salesMock.sale);
+  it('a função getById retorna corretamente os itens da venda passada como parâmetro', async function () {
+    const saleId = 2;
+    sinon.stub(salesService, 'getById').resolves(salesMock.sale);
 
-//     // act
-//     const sale = await salesService.getById(saleId);
+    const sale = await salesService.getById(saleId);
+    expect(sale).to.be.equal(salesMock.sale);
+  });
 
-//     // assert
-//     console.log(sale);
-//     expect(sale).to.be.equal(salesMock.sale);
-//   });
+  it('a função getById retorna uma mensagem de erro se não houverem produtos na venda passada como parâmetro', async function () {
+    const saleId = 5;
+    sinon.stub(salesService, 'getById').resolves([]);
 
-//   // it('retorna a mensagem de erro correta se não encontrar o produto pelo id na rota', async function () {
-//   //   // arrange
-//   //   const productId = 5;
-//   //   sinon.stub(salesModel, 'getById').resolves(salesMock.notFoundError);
+    try {
+      await salesService.getById(saleId);
+    } catch (error) {
+      expect(error.message).toBe(salesMock.notFoundError.message);
+    }
+  });
 
-//   //   // act
-//   //   const product = await salesService.getById(productId);
+  it('a função getById retorna uma mensagem de erro se a venda passada como parâmetro não existir', async function () {
+    const saleId = undefined;
+    sinon.stub(salesService, 'getById').resolves(undefined);
 
-//   //   // assert
-//   //   expect(product).to.be.equal(salesMock.notFoundError);
-//   // });
-// });
+    try {
+      await salesService.getById(saleId);
+    } catch (error) {
+      expect(error.message).toBe(salesMock.notFoundError.message);
+    }
+  });
+});

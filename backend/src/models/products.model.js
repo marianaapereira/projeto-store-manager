@@ -15,7 +15,6 @@ const getById = async (productId) => {
 
   const [[product]] = await connection.execute(query);
 
-  // return camelize(product);
   return product;
 };
 
@@ -28,6 +27,8 @@ const registerProduct = async (productName) => {
 
   return newProduct;
 };
+
+// const registerProduct = async (productName) => productName;
 
 module.exports = {
   getAll,

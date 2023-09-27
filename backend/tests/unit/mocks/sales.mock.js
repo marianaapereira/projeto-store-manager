@@ -27,4 +27,6 @@ const sale = [
   },
 ];
 
-module.exports = { sales, sale };
+const notFoundError = { message: 'Sale not found' };
+
+module.exports = { sales, sale, notFoundError };
