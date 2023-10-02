@@ -27,8 +27,24 @@ const registerProduct = async (req, res) => {
   return res.status(HTTP_CREATED_STATUS).json(registeredProduct);
 };
 
+const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    const productToUpdate = await productsService.getById(id);
+    const product = { ...productToUpdate, name };
+    const updatedProduct = await productsService.updateProduct(product);
+
+    return res.status(HTTP_OK_STATUS).json(updatedProduct);
+  } catch ({ message }) {
+    return res.status(HTTP_NOT_FOUND_STATUS).json({ message });
+  }
+}; 
+
 module.exports = {
   getAll,
   getById,
   registerProduct,
+  updateProduct,
 };

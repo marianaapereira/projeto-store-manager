@@ -12,10 +12,21 @@ const getById = async (id) => {
   return product;
 };
 
-const registerProduct = async (productName) => productsModel.registerProduct(productName);
+const registerProduct = async (name) => productsModel.registerProduct(name);
+
+const updateProduct = async (product) => {
+  const updatedProduct = productsModel.updateProduct(product);
+
+  if (!updatedProduct) {
+    throw new Error('Product not found');
+  }
+
+  return updatedProduct;
+};
 
 module.exports = {
   getAll,
   getById,
   registerProduct,
+  updateProduct,
 };

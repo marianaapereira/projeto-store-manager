@@ -33,4 +33,13 @@ describe('O service de products', function () {
 
     expect(product).to.be.equal(productsMock.notFoundError);
   });
+
+  it('retorna a mensagem de erro correta se não encontrar o produto a ser editado', async function () {
+    const productId = 5;
+    sinon.stub(productsModel, 'updateProduct').resolves(productsMock.notFoundError);
+
+    const product = await productsService.updateProduct(productId);
+
+    expect(product).to.be.equal(productsMock.notFoundError);
+  });
 });

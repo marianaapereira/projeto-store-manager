@@ -8,7 +8,9 @@ const validateProductName = (req, res, next) => {
   const { name } = req.body;
 
   if (!name) {
-    return res.status(HTTP_BAD_REQUEST_STATUS).json({ message: '"name" is required' });
+    return res.status(HTTP_BAD_REQUEST_STATUS).json({ 
+      message: '"name" is required', 
+    });
   }
 
   if (name.length < MIN_NAME_LENGTH) {

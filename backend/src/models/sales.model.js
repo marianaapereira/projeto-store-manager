@@ -35,7 +35,7 @@ const getInsertedSaleProducts = async (saleId) => {
   return insertedSaleProducts;
 };
 
-const registerSale = async (saleProducts) => {
+  const registerSale = async (saleProducts) => {
   const saleId = await createNewSale();
 
   const insertions = saleProducts.map(
