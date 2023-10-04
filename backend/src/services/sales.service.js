@@ -44,8 +44,13 @@ const registerSale = async (saleProducts) => {
   return newSale;
 };
 
+const deleteSale = async (id) => {
+  await salesModel.deleteSale(id);
+};
+
 module.exports = {
   getAll,
   getById,
   registerSale,
+  deleteSale,
 };

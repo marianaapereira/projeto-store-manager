@@ -1,7 +1,7 @@
 const salesService = require('../services/sales.service');
 
 const {
-  HTTP_OK_STATUS, HTTP_NOT_FOUND_STATUS, HTTP_CREATED_STATUS,
+  HTTP_OK_STATUS, HTTP_NOT_FOUND_STATUS, HTTP_CREATED_STATUS, HTTP_NO_CONTENT_STATUS,
 } = require('../consts/httpStatusCodes');
 
 const getAll = async (_req, res) => {
@@ -27,8 +27,16 @@ const registerSale = async (req, res) => {
   return res.status(HTTP_CREATED_STATUS).json(registeredSale);
 };
 
+const deleteSale = async (req, res) => {
+  const { id } = req.params;
+  await salesService.deleteSale(id);
+
+  return res.status(HTTP_NO_CONTENT_STATUS).json();
+};
+
 module.exports = {
   getAll,
   getById,
   registerSale,
+  deleteSale,
 };

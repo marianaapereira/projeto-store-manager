@@ -1,4 +1,5 @@
 const productsService = require('../services/products.service');
+const salesService = require('../services/sales.service');
 
 const { 
   HTTP_BAD_REQUEST_STATUS, HTTP_UNPROCESSABLE_ENTITY_STATUS, HTTP_NOT_FOUND_STATUS,
@@ -64,8 +65,20 @@ const productExistenceCheck = async (req, res, next) => {
   }
 };
 
+const saleExistenceCheck = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await salesService.getById(id);
+  } catch ({ message }) {
+    return res.status(HTTP_NOT_FOUND_STATUS).json({ message });
+  }
+
+  next();
+};
+
 module.exports = {
   paramsExistenceCheck,
   quantityValidation,
   productExistenceCheck,
+  saleExistenceCheck,
 };
