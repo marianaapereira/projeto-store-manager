@@ -1,63 +1,71 @@
-// const productsService = require('../services/products.service');
+const productsService = require('../services/products.service');
 
 const { 
-  HTTP_BAD_REQUEST_STATUS, HTTP_UNPROCESSABLE_ENTITY_STATUS, // HTTP_NOT_FOUND_STATUS,
+  HTTP_BAD_REQUEST_STATUS, HTTP_UNPROCESSABLE_ENTITY_STATUS, HTTP_NOT_FOUND_STATUS,
 } = require('../consts/httpStatusCodes');
 
 const MIN_QUANTITY_NUMBER = 1;
 
-// const validadeProductsIds = async (req, res, next) => {
-//   const salesProductsArray = req.body;
+const valueIsUndefined = (value) => typeof value === 'undefined' || value === null;
 
-//   salesProductsArray.map(async ({ productId }) => {
-//     if (!productId) {
-//       return res.status(HTTP_BAD_REQUEST_STATUS).json({ 
-//         message: '"productId" is required',
-//       });
-//     }
+const paramsExistenceCheck = async (req, res, next) => {
+  try {
+    const salesProductsArray = req.body;
 
-//     if (!productId) {
-//       return res.status(HTTP_BAD_REQUEST_STATUS).json({ 
-//         message: '"productId" is required',
-//       });
-//     }
+    const validations = salesProductsArray.map(async ({ productId, quantity }) => {
+      if (valueIsUndefined(productId)) {
+        throw new Error('"productId" is required');
+      }
 
-//     try {
-//       await productsService.getById(productId);
-//     } catch ({ message }) {
-//       return res.status(HTTP_NOT_FOUND_STATUS).json({ message });
-//     }
-//   });
+      if (valueIsUndefined(quantity)) {
+        throw new Error('"quantity" is required');
+      }
+    });
 
-//   next();
-// };
+    await Promise.all(validations);
 
-// const productExistenceCheck = async (id) => {
+    next();
+  } catch ({ message }) {
+    return res.status(HTTP_BAD_REQUEST_STATUS).json({ message });
+  }
+};
 
-// };
+const quantityValidation = async (req, res, next) => {
+  try {
+    const salesProductsArray = req.body;
 
-const validadeProductsQuantities = (req, res, next) => {
-  const salesProductsArray = req.body;
+    const quantityValidations = salesProductsArray.map(async ({ quantity }) => {
+      if (quantity < MIN_QUANTITY_NUMBER) {
+        throw new Error('"quantity" must be greater than or equal to 1');
+      }
+    });
 
-  salesProductsArray.forEach(({ quantity }) => {
-    if (!quantity) {
-      return res.status(HTTP_BAD_REQUEST_STATUS).json({
-        message: '"quantity" is required', 
-      });
-    }
+    await Promise.all(quantityValidations);
 
-    if (quantity < MIN_QUANTITY_NUMBER) {
-      return res.status(HTTP_UNPROCESSABLE_ENTITY_STATUS).json({ 
-        message: `"quantity" must be greater than or equal to ${MIN_QUANTITY_NUMBER}`,
-      });
-    }
-  });
+    next();
+  } catch ({ message }) {
+    return res.status(HTTP_UNPROCESSABLE_ENTITY_STATUS).json({ message });
+  }
+};
 
-  next();
+const productExistenceCheck = async (req, res, next) => {
+  try {
+    const salesProductsArray = req.body;
+
+    const quantityValidations = salesProductsArray.map(async ({ productId }) => {
+      await productsService.getById(productId);
+    });
+
+    await Promise.all(quantityValidations);
+
+    next();
+  } catch ({ message }) {
+    return res.status(HTTP_NOT_FOUND_STATUS).json({ message });
+  }
 };
 
 module.exports = {
-  // validadeProductsIds,
-  validadeProductsQuantities,
-  // productExistenceCheck,
+  paramsExistenceCheck,
+  quantityValidation,
+  productExistenceCheck,
 };

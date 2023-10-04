@@ -14,9 +14,10 @@ router.get(
 
 router.post(
   '/', 
-  // salesMiddlewares.validadeProductsQuantities,
-  // salesMiddlewares.validadeProductsIds,
-  salesMiddlewares.teste,
+  salesMiddlewares.paramsExistenceCheck,
+  salesMiddlewares.quantityValidation,
+  salesMiddlewares.productExistenceCheck,
+
   salesController.registerSale,
 );
 
