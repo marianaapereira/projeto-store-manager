@@ -14,9 +14,8 @@ router.get(
 
 router.post(
   '/', 
-  salesMiddlewares.paramsExistenceCheck,
-  salesMiddlewares.quantityValidation,
-  salesMiddlewares.productExistenceCheck,
+  salesMiddlewares.paramsValidations,
+  salesMiddlewares.productsExistenceCheck,
 
   salesController.registerSale,
 );
@@ -31,6 +30,14 @@ router.delete(
   salesMiddlewares.saleExistenceCheck,
 
   salesController.deleteSale,
+);
+
+router.put(
+  '/:saleId/products/:productId/quantity',
+  salesMiddlewares.quantityValidations,
+  salesMiddlewares.productInSaleValidation,
+
+  salesController.updateProductQuantity,
 );
 
 module.exports = router;

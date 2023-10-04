@@ -11,15 +11,13 @@ const getAll = async () => {
 
 const getById = async (saleId) => {
   const query = `SELECT * FROM sales_products 
-  INNER JOIN sales ON sales.id = sales_products.sale_id
-  WHERE id = ${saleId}`;
+    INNER JOIN sales ON sales.id = sales_products.sale_id
+    WHERE id = ${saleId}`;
 
   const [sale] = await connection.execute(query);
 
   return sale;
 };
-
-// req 5
 
 const createNewSale = async () => {
   const insertion = 'INSERT INTO sales (date) VALUES (CURRENT_TIMESTAMP)';
@@ -62,9 +60,23 @@ const deleteSale = async (id) => {
   await connection.execute(deletion);
 };
 
+const updateProductQuantity = async (saleId, productId, quantity) => {
+  const update = `UPDATE sales_products SET quantity = ${quantity} 
+    WHERE sale_id = ${saleId} AND product_id = ${productId}`;
+  await connection.execute(update);
+
+  const query = `SELECT * FROM sales_products
+    INNER JOIN sales ON sales.id = sales_products.sale_id
+    WHERE sale_id = ${saleId} AND product_id = ${productId}`;
+  const [[updatedProduct]] = await connection.execute(query);
+
+  return updatedProduct;
+};
+
 module.exports = {
   getAll,
   getById,
   registerSale,
   deleteSale,
+  updateProductQuantity,
 };
