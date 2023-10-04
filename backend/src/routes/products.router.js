@@ -7,12 +7,38 @@ const productsMiddlewares = require('../middlewares/products.middlewares');
 
 // rotas /products
 
-router.get('/', productsController.getAll);
+router.get(
+  '/',
+  productsController.getAll,
+);
 
-router.get('/:id', productsController.getById);
+router.post(
+  '/',
+  productsMiddlewares.validateProductName,
 
-router.post('/', productsMiddlewares.validateProductName, productsController.registerProduct);
+  productsController.registerProduct,
+);
 
-router.put('/:id', productsMiddlewares.validateProductName, productsController.updateProduct);
+router.get(
+  '/:id',
+  productsMiddlewares.productExistenceCheck,
+
+  productsController.getById,
+);
+
+router.put(
+  '/:id',
+  productsMiddlewares.productExistenceCheck,
+  productsMiddlewares.validateProductName,
+
+  productsController.updateProduct,
+);
+
+router.delete(
+  '/:id',
+  productsMiddlewares.productExistenceCheck,
+
+  productsController.deleteProduct,
+);
 
 module.exports = router;

@@ -39,10 +39,15 @@ const getInsertedSaleProducts = async (saleId) => {
   const saleId = await createNewSale();
 
   const insertions = saleProducts.map(
-      async ({ productId, quantity }) => {
-        const insertion = `INSERT INTO sales_products (sale_id, product_id, quantity)
-            VALUES (${saleId}, ${productId}, ${quantity})`;
-        await connection.execute(insertion); 
+    async ({ productId, quantity }, index) => {
+      const insertion = `INSERT INTO sales_products (sale_id, product_id, quantity)
+        VALUES (${saleId}, ${productId}, ${quantity})`;
+      
+      try {
+        await connection.execute(insertion);
+      } catch (error) {
+        console.error(`Erro durante a inserção do item ${index}: ${error}`);
+      }
     },
   );
 
