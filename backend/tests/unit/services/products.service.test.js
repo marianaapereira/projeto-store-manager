@@ -35,11 +35,30 @@ describe('O service de products', function () {
   });
 
   it('retorna a mensagem de erro correta se não encontrar o produto a ser editado', async function () {
-    const productId = 5;
-    sinon.stub(productsModel, 'updateProduct').resolves(productsMock.notFoundError);
+    try {
+      const product = {
+        id: 0,
+        name: 'produto editado',
+      };
 
-    const product = await productsService.updateProduct(productId);
+      sinon.stub(productsModel, 'updateProduct').resolves();
 
-    expect(product).to.be.equal(productsMock.notFoundError);
+      await productsService.updateProduct(product);
+    } catch ({ message }) {
+      expect(message).to.be.equal(productsMock.notFoundError);
+    }
+  });
+
+  it('retorna o produto a editado com sucesso se os dados fornecidos estiverem corretos', async function () {
+    const product = {
+      id: 1,
+      name: 'produto editado',
+    };
+
+    sinon.stub(productsModel, 'updateProduct').resolves(product);
+
+    const updatedProduct = await productsService.updateProduct(product);
+
+    expect(updatedProduct).to.be.equal(product);
   });
 });

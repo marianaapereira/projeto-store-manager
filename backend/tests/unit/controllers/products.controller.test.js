@@ -6,7 +6,7 @@ const productsService = require('../../../src/services/products.service');
 const productsController = require('../../../src/controllers/products.controller');
 
 const { 
-  HTTP_OK_STATUS, // HTTP_CREATED_STATUS,
+  HTTP_OK_STATUS, HTTP_CREATED_STATUS, HTTP_NO_CONTENT_STATUS,
 } = require('../../../src/consts/httpStatusCodes');
 
 const { expect } = chai;
@@ -14,7 +14,7 @@ const { expect } = chai;
 describe('No controller de products', function () {
   afterEach(sinon.restore);
 
-  it('a função getAll deve retornar todos os produtos corretamente', async function () {
+  it('a função getAll retorna todos os produtos corretamente', async function () {
     sinon.stub(productsService, 'getAll').resolves(productsMock.products);
 
     const res = {
@@ -29,11 +29,10 @@ describe('No controller de products', function () {
 
     await productsController.getAll({}, res);
   });
-
-  it('a função getById deve retornar o produto correto passado por parâmetro', async function () {
-    // Configurar um stub ou mock para productsService.getById
+  
+  it('a função getById retorna o produto passado por parâmetro', async function () {
     sinon.stub(productsService, 'getById').resolves({ id: 1, name: 'Produto 1' });
-
+    
     const req = { params: { id: 1 } };
     const res = {
       status: (statusCode) => {
@@ -41,29 +40,67 @@ describe('No controller de products', function () {
         return res;
       },
       json: (data) => {
-        expect(data).to.deep.equal({ id: 1, name: 'Produto 1' }); // Verificar os dados do produto
+        expect(data).to.deep.equal({ id: 1, name: 'Produto 1' });
       },
     };
 
     await productsController.getById(req, res);
   });
 
-  // it('deve tratar o cenário de produto não encontrado', async function () {
-  //   // Configurar um stub ou mock para productsService.getById que retorna um erro
-  //   const error = new Error('Produto não encontrado');
-  //   sinon.stub(productsService, 'getById').rejects(error);
+  it('a função registerProduct retorna o produto criado com o nome correto', async function () {
+    sinon.stub(productsService, 'registerProduct').resolves({ id: 1, name: 'produto' });
+  
+    const req = { body: { name: 'produto' } };
 
-  //   const req = { params: { id: 1 } };
-  //   const res = {
-  //     status: (statusCode) => {
-  //       expect(statusCode).to.equal(404); // Verificar o status de not found
-  //       return res;
-  //     },
-  //     json: (data) => {
-  //       expect(data).to.deep.equal({ message: 'Produto não encontrado' }); // Verificar a mensagem de erro
-  //     },
-  //   };
+    const res = {
+      status: (statusCode) => {
+        expect(statusCode).to.equal(HTTP_CREATED_STATUS);
+        return res;
+      },
+      json: (data) => {
+        expect(data).to.deep.equal({ id: 1, name: 'produto' });
+      },
+    };
+  
+    await productsController.registerProduct(req, res);
+  });
 
-  //   await productsController.getById(req, res);
-  // });
+  it('a função deleteProduct retorna o código http correto e não retorna mensagem', async function () {
+    sinon.stub(productsService, 'deleteProduct').resolves();
+  
+    const req = { params: { id: 1 } };
+
+    const res = {
+      status: (statusCode) => {
+        expect(statusCode).to.equal(HTTP_NO_CONTENT_STATUS);
+        return res;
+      },
+      json: (data) => {
+        expect(data).to.deep.equal();
+      },
+    };
+  
+    await productsController.deleteProduct(req, res);
+  });
+
+  it('a função updateProduct retorna o produto atualizado', async function () {
+    sinon.stub(productsService, 'getById').resolves({ id: 1, name: 'produto 2' });
+  
+    const req = { 
+      params: { id: 1 },
+      body: { name: 'produto 2' },
+    };
+
+    const res = {
+      status: (statusCode) => {
+        expect(statusCode).to.equal(HTTP_OK_STATUS);
+        return res;
+      },
+      json: (data) => {
+        expect(data).to.deep.equal({ id: 1, name: 'produto 2' });
+      },
+    };
+  
+    await productsController.updateProduct(req, res);
+  });
 });

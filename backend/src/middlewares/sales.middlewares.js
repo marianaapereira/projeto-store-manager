@@ -121,6 +121,10 @@ const productInSaleValidation = async (req, res, next) => {
 };
 
 module.exports = {
+  valueIsUndefined,
+  productIdExistenceCheck,
+  quantityExistenceCheck,
+  quantityValueCheck,
   paramsValidations,
   productsExistenceCheck,
   saleExistenceCheck,

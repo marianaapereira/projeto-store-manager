@@ -9,10 +9,10 @@ const productModel = require('../../../src/models/products.model');
 chai.use(sinonChai);
 const { expect } = chai;
 
-describe('O model de products', function () {
+describe('No model de products', function () {
   afterEach(sinon.restore);
 
-  it('lista todos os produtos', async function () {
+  it('a função getAll lista todos os produtos', async function () {
     // arrange
     sinon.stub(connection, 'execute').resolves([productsMock.products]);
 
@@ -23,7 +23,7 @@ describe('O model de products', function () {
     expect(products).to.be.equal(productsMock.products);
   });
 
-  it('exibe o produto correto de acordo com o id na url', async function () {
+  it('a função getById exibe o produto correto de acordo com o id na url', async function () {
     // arrange
     const productId = 3;
     sinon.stub(productModel, 'getById').resolves(productsMock.products[2]);
@@ -35,7 +35,7 @@ describe('O model de products', function () {
     expect(product).to.be.equal(productsMock.products[2]);
   });
 
-  it('retorna um erro se não encontrar o produto pelo id na rota', async function () {
+  it('a função getById retorna um erro se não encontrar o produto pelo id na rota', async function () {
     // arrange
     const productId = 5;
     sinon.stub(productModel, 'getById').resolves(productsMock.notFoundError);
@@ -45,5 +45,20 @@ describe('O model de products', function () {
 
     // assert
     expect(product).to.be.equal(productsMock.notFoundError);
+  });
+
+  it('a função registerProduct registra o produto com o nome correto', async function () {
+    // arrange
+    const newProductName = 'produto novo';
+    const newExpectedProduct = { id: 5, name: newProductName };
+    
+    sinon.stub(connection, 'execute').resolves([[newExpectedProduct]]);
+
+    // act
+    const newProduct = await productModel.registerProduct(newProductName);
+
+    // assert
+    expect(newProduct).to.be.equal(newExpectedProduct);
+    expect(newProduct).to.have.property('name').equal(newProductName);
   });
 });

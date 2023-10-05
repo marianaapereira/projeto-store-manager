@@ -27,6 +27,11 @@ const sale = [
   },
 ];
 
-const notFoundError = { message: 'Sale not found' };
+const saleErrors = {
+  saleNotFound: { message: 'Sale not found' },
+  productIdIsRequired: { message: '"productId" is required' },
+  quantityIsRequired: { message: '"quantity" is required' },
+  quantityMustBe: { message: '"quantity" must be greater than or equal to 1' },
+}; 
 
-module.exports = { sales, sale, notFoundError };
+module.exports = { sales, sale, saleErrors };

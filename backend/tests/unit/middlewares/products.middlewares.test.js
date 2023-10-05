@@ -14,6 +14,7 @@ describe('Nos middlewares de products', function () {
 
    it('a função validateProductName deve retornar status 400 e mensagem de erro se o nome do produto não for fornecido', function (done) {
     const req = { body: {} };
+    
     const res = {
       status: (statusCode) => {
         expect(statusCode).to.equal(HTTP_BAD_REQUEST_STATUS);
@@ -30,6 +31,7 @@ describe('Nos middlewares de products', function () {
 
   it('a função validateProductName deve retornar status 422 e mensagem de erro se o nome do produto for menor do que o mínimo permitido', function (done) {
     const req = { body: { name: 'abc' } };
+
     const res = {
       status: (statusCode) => {
         expect(statusCode).to.equal(HTTP_UNPROCESSABLE_ENTITY_STATUS);
@@ -48,6 +50,7 @@ describe('Nos middlewares de products', function () {
 
   it('a função validateProductName deve retornar status 422 e mensagem de erro se o nome do produto for igual ao número mínimo permitido', function (done) {
     const req = { body: { name: 'abc' } };
+
     const res = {
       status: (statusCode) => {
         expect(statusCode).to.equal(HTTP_UNPROCESSABLE_ENTITY_STATUS);
@@ -66,6 +69,7 @@ describe('Nos middlewares de products', function () {
 
   it('a função validateProductName deve chamar next() se o nome do produto for válido', function (done) {
     const req = { body: { name: 'arroz' } };
+
     const res = {
       status: () => res,
       json: () => {},

@@ -6,39 +6,47 @@ const { expect } = chai;
 
 const salesMock = require('../mocks/sales.mock');
 const salesService = require('../../../src/services/sales.service');
+const salesModel = require('../../../src/models/sales.model');
+
+const { saleErrors } = salesMock;
 
 chai.use(sinonChai);
 
 describe('No service de sales', function () {
   afterEach(sinon.restore);
 
-  it('a função getById retorna corretamente os itens da venda passada como parâmetro', async function () {
-    const saleId = 2;
-    sinon.stub(salesService, 'getById').resolves(salesMock.sale);
-
-    const sale = await salesService.getById(saleId);
-    expect(sale).to.be.equal(salesMock.sale);
-  });
-
-  it('a função getById retorna uma mensagem de erro se não houverem produtos na venda passada como parâmetro', async function () {
-    const saleId = 5;
-    sinon.stub(salesService, 'getById').resolves([]);
-
+  it('a função getById lança erro corretamente se a venda não for encontrada', async function () {
     try {
-      await salesService.getById(saleId);
+      sinon.stub(salesModel, 'getById').resolves();
+      await salesService.getById(1);
     } catch (error) {
-      expect(error.message).toBe(salesMock.notFoundError.message);
+      expect(error.message).to.equal(saleErrors.saleNotFound.message);
     }
   });
 
-  it('a função getById retorna uma mensagem de erro se a venda passada como parâmetro não existir', async function () {
-    const saleId = undefined;
-    sinon.stub(salesService, 'getById').resolves(undefined);
-
+  it('a função getById lança erro corretamente se a venda não tiver itens cadastrados', async function () {
     try {
-      await salesService.getById(saleId);
+      sinon.stub(salesModel, 'getById').resolves([]);
+      await salesService.getById(1);
     } catch (error) {
-      expect(error.message).toBe(salesMock.notFoundError.message);
+      expect(error.message).to.equal(saleErrors.saleNotFound.message);
     }
+  });
+
+  it('a função getById não lança erro em caso de sucesso', async function () {
+    sinon.stub(salesModel, 'getById').resolves([
+      {
+        date: '2023-10-05T03:37:21.000Z',
+        productId: 1,
+        quantity: 5,
+      },
+      {
+        date: '2023-10-05T03:37:21.000Z',
+        productId: 2,
+        quantity: 10,
+      },
+    ]);
+
+    expect(async () => salesService.getById(1)).to.not.throw();
   });
 });
