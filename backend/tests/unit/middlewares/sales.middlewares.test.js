@@ -7,7 +7,13 @@ chai.use(sinonChai);
 const { expect } = chai;
 
 const salesMiddlewares = require('../../../src/middlewares/sales.middlewares');
+const salesService = require('../../../src/services/sales.service');
+
 const { saleErrors } = require('../mocks/sales.mock');
+
+const { 
+  HTTP_NOT_FOUND_STATUS,
+} = require('../../../src/consts/httpStatusCodes');
 
 describe('Nos middlewares de sales', function () {
   afterEach(sinon.restore);
@@ -51,7 +57,69 @@ describe('Nos middlewares de sales', function () {
     const validQuantity = 10;
     expect(() => salesMiddlewares.quantityValueCheck(validQuantity)).to.not.throw();
 
+    const validEqualQuantity = 1;
+    expect(() => salesMiddlewares.quantityValueCheck(validEqualQuantity)).to.not.throw();
+
     const invalidQuantity = 0;
     expect(() => salesMiddlewares.quantityValueCheck(invalidQuantity)).to.throw(saleErrors.quantityMustBe.message);
+  });
+
+  it('a função productInSaleValidation retorna erro se não encontrar a venda', function (done) {
+    sinon.stub(salesService, 'getById').resolves();
+    
+    const req = { params: { productId: 1, saleId: 0 } };
+
+    const res = {
+      status: (statusCode) => {
+        expect(statusCode).to.equal(HTTP_NOT_FOUND_STATUS);
+        return res;
+      },
+      json: (data) => {
+        expect(data).to.deep.equal({
+          message: 'Sale not found',
+        });
+        done();
+      },
+    };
+
+    salesMiddlewares.productInSaleValidation(req, res, () => {
+      done();
+    });
+  });
+
+  it('a função productInSaleValidation retorna erro se não encontrar o produto na venda', function (done) {
+    const saleMock = [
+      {
+        date: '2023-10-05T19:43:20.000Z',
+        productId: 1,
+        quantity: 5,
+      },
+      {
+        date: '2023-10-05T19:43:20.000Z',
+        productId: 2,
+        quantity: 10,
+      },
+    ];
+    
+    sinon.stub(salesService, 'getById').resolves(saleMock);
+    
+    const req = { params: { productId: 0, saleId: 1 } };
+
+    const res = {
+      status: (statusCode) => {
+        expect(statusCode).to.equal(HTTP_NOT_FOUND_STATUS);
+        return res;
+      },
+      json: (data) => {
+        expect(data).to.deep.equal({
+          message: 'Product not found in sale',
+        });
+        done();
+      },
+    };
+
+    salesMiddlewares.productInSaleValidation(req, res, () => {
+      done();
+    });
   });
 });

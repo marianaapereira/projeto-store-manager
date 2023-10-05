@@ -10,10 +10,10 @@ const productsService = require('../../../src/services/products.service');
 
 chai.use(sinonChai);
 
-describe('O service de products', function () {
+describe('No service de products', function () {
   afterEach(sinon.restore);
 
-  it('exibe o produto correto de acordo com o id na url', async function () {
+  it('a função getById retorna o produto correto passado por parâmetro', async function () {
     // arrange
     const productId = 3;
     sinon.stub(productsModel, 'getById').resolves(productsMock.products[2]);
@@ -25,7 +25,7 @@ describe('O service de products', function () {
     expect(product).to.be.equal(productsMock.products[2]);
   });
 
-  it('retorna a mensagem de erro correta se não encontrar o produto pelo id na rota', async function () {
+  it('a função getById retorna a mensagem de erro correta se não encontrar o produto solicitado', async function () {
     const productId = 5;
     sinon.stub(productsModel, 'getById').resolves(productsMock.notFoundError);
 
@@ -34,7 +34,7 @@ describe('O service de products', function () {
     expect(product).to.be.equal(productsMock.notFoundError);
   });
 
-  it('retorna a mensagem de erro correta se não encontrar o produto a ser editado', async function () {
+  it('a função updateProduct retorna a mensagem de erro correta se não encontrar o produto a ser editado', async function () {
     try {
       const product = {
         id: 0,
@@ -49,16 +49,29 @@ describe('O service de products', function () {
     }
   });
 
-  it('retorna o produto a editado com sucesso se os dados fornecidos estiverem corretos', async function () {
-    const product = {
-      id: 1,
-      name: 'produto editado',
-    };
+  it('a função updateProduct retorna o produto editado com sucesso se os dados fornecidos estiverem corretos', async function () {
+    try {
+      const product = {
+        id: 1,
+        name: 'produto editado',
+      };
+  
+      sinon.stub(productsModel, 'updateProduct').resolves(product);
+  
+      const updatedProduct = await productsService.updateProduct(product);
+  
+      expect(updatedProduct).to.be.equal(product);
+    } catch (error) {
+      expect(error).to.be.equal(undefined);
+    }
+  });
 
-    sinon.stub(productsModel, 'updateProduct').resolves(product);
+  it('a função deleteProduct retorna a mensagem de erro correta se não encontrar o produto pelo id na rota', async function () {
+    const productId = 5;
+    const deleteStub = sinon.stub(productsModel, 'deleteProduct');
 
-    const updatedProduct = await productsService.updateProduct(product);
+    await productsService.deleteProduct(productId);
 
-    expect(updatedProduct).to.be.equal(product);
+    expect(deleteStub.calledOnceWith(productId)).to.be.equal(true);
   });
 });
