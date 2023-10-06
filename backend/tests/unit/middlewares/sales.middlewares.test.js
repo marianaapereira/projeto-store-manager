@@ -70,7 +70,7 @@ describe('Nos middlewares de sales', function () {
   it('a função productInSaleValidation retorna erro se não encontrar a venda', function (done) {
     sinon.stub(salesService, 'getById').resolves();
     
-    const req = { params: { productId: 1, saleId: 0 } };
+    const req = { params: { productId: 1, saleId: 0 } }; 
 
     const res = {
       status: (statusCode) => {
