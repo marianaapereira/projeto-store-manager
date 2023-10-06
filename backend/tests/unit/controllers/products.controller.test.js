@@ -20,13 +20,6 @@ describe('No controller de products', function () {
     const res = {
       status: sinon.stub().returnsThis(),
       json: sinon.stub(),
-      // status: (statusCode) => {
-      //   expect(statusCode).to.equal(HTTP_OK_STATUS);
-      //   return res;
-      // },
-      // json: (data) => {
-      //   expect(data).to.deep.equal(productsMock.products);
-      // },
     };
 
     await productsController.getAll({}, res);
@@ -46,14 +39,6 @@ describe('No controller de products', function () {
     const res = {
       status: sinon.stub().returnsThis(),
       json: sinon.stub(),
-
-      // (statusCode) => {
-        // expect(statusCode).to.equal(HTTP_OK_STATUS);
-        // return res;
-      // },
-      // json: (data) => {
-      //   expect(data).to.deep.equal(productMock);
-      // },
     };
 
     await productsController.getById(req, res);
@@ -73,14 +58,6 @@ describe('No controller de products', function () {
     const res = {
       status: sinon.stub().returnsThis(),
       json: sinon.stub(),
-
-      // status: (statusCode) => {
-      //   expect(statusCode).to.equal(HTTP_CREATED_STATUS);
-      //   return res;
-      // },
-      // json: (data) => {
-      //   expect(data).to.deep.equal({ id: 1, name: 'produto' });
-      // },
     };
   
     await productsController.registerProduct(req, res);
@@ -99,14 +76,6 @@ describe('No controller de products', function () {
     const res = {
       status: sinon.stub().returnsThis(),
       json: sinon.stub(),
-
-      // status: (statusCode) => {
-      //   expect(statusCode).to.equal(HTTP_NO_CONTENT_STATUS);
-      //   return res;
-      // },
-      // json: (data) => {
-      //   expect(data).to.deep.equal();
-      // },
     };
   
     await productsController.deleteProduct(req, res);
@@ -131,14 +100,6 @@ describe('No controller de products', function () {
     const res = {
       status: sinon.stub().returnsThis(),
       json: sinon.stub(),
-
-      // status: (statusCode) => {
-      //   expect(statusCode).to.equal(HTTP_OK_STATUS);
-      //   return res;
-      // },
-      // json: (data) => {
-      //   expect(data).to.deep.equal({ id: 1, name: 'produto 2' });
-      // },
     };
   
     await productsController.updateProduct(req, res);

@@ -23,28 +23,17 @@ describe('No model de products', function () {
     expect(products).to.be.equal(productsMock.products);
   });
 
-  it('a função getById exibe o produto correto de acordo com o id na url', async function () {
+  it('a função getById retorna o produto corretamente', async function () {
     // arrange
     const productId = 3;
-    sinon.stub(productModel, 'getById').resolves(productsMock.products[2]);
+    const productMock = productsMock.products[2];
+    sinon.stub(connection, 'execute').resolves([[productMock]]);
 
     // act
     const product = await productModel.getById(productId);
 
     // assert
-    expect(product).to.be.equal(productsMock.products[2]);
-  });
-
-  it('a função getById retorna um erro se não encontrar o produto pelo id na rota', async function () {
-    // arrange
-    const productId = 5;
-    sinon.stub(productModel, 'getById').resolves(productsMock.notFoundError);
-
-    // act
-    const product = await productModel.getById(productId);
-
-    // assert
-    expect(product).to.be.equal(productsMock.notFoundError);
+    expect(product).to.be.equal(productMock);
   });
 
   it('a função registerProduct registra o produto com o nome correto', async function () {
@@ -60,5 +49,29 @@ describe('No model de products', function () {
     // assert
     expect(newProduct).to.be.equal(newExpectedProduct);
     expect(newProduct).to.have.property('name').equal(newProductName);
+  });
+
+  it('a função updateProduct atualiza o produto corretamente', async function () {
+    // arrange
+    const productMock = productsMock.products[2];
+    sinon.stub(connection, 'execute').resolves([[productMock]]);
+
+    // act
+    const product = await productModel.updateProduct(productMock);
+
+    // assert
+    expect(product).to.be.equal(productMock);
+  });
+
+  it('a função deleteProduct deleta o produto corretamente', async function () {
+    // arrange
+    const productId = 3;
+    sinon.stub(connection, 'execute').resolves();
+
+    // act
+    const deletedProduct = await productModel.deleteProduct(productId);
+
+    // assert
+    expect(deletedProduct).to.be.equal(undefined);
   });
 });

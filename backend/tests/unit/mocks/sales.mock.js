@@ -27,6 +27,19 @@ const sale = [
   },
 ];
 
+const saleProducts = [
+  {
+    date: '2023-10-05T19:43:20.000Z',
+    productId: 1,
+    quantity: 5,
+  },
+  {
+    date: '2023-10-05T19:43:20.000Z',
+    productId: 2,
+    quantity: 10,
+  },
+];
+
 const saleErrors = {
   saleNotFound: { message: 'Sale not found' },
   productIdIsRequired: { message: '"productId" is required' },
@@ -34,4 +47,4 @@ const saleErrors = {
   quantityMustBe: { message: '"quantity" must be greater than or equal to 1' },
 }; 
 
-module.exports = { sales, sale, saleErrors };
+module.exports = { sales, sale, saleErrors, saleProducts };
