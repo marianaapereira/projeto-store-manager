@@ -39,6 +39,8 @@ const registerSale = async (saleProducts) => {
     quantity,
   }));
 
+  itemsSold.itemsSold.sort((a, b) => a.productId - b.productId);
+
   const newSale = { ...createdSale, itemsSold };
 
   return newSale;

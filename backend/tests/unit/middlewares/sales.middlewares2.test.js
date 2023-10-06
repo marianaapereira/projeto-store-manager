@@ -11,7 +11,7 @@ const salesService = require('../../../src/services/sales.service');
 const productsService = require('../../../src/services/products.service');
 
 const { 
-  HTTP_NOT_FOUND_STATUS, // HTTP_UNPROCESSABLE_ENTITY_STATUS,
+  HTTP_NOT_FOUND_STATUS, HTTP_UNPROCESSABLE_ENTITY_STATUS,
 } = require('../../../src/consts/httpStatusCodes');
 
 describe('Nos middlewares de sales', function () {
@@ -136,30 +136,30 @@ describe('Nos middlewares de sales', function () {
     expect(next.called).to.equal(false);
   });
 
-  // it('a função quantityValidations chama next() se a quantidade for válida', function (done) {
-  //   const req = { body: { quantity: 5 } };
-  //   const res = {};
-  //   const next = () => {
-  //     done();
-  //   };
+  it('a função quantityValidations chama next() se a quantidade for válida', function (done) {
+    const req = { body: { quantity: 5 } };
+    const res = {};
+    const next = () => {
+      done();
+    };
 
-  //   salesMiddlewares.quantityValidations(req, res, next);
-  // });
+    salesMiddlewares.quantityValidations(req, res, next);
+  });
 
-  // it('a função quantityValidations retorna um erro se a quantidade não for válida', function (done) {
-  //   const req = { body: { quantity: 0 } };
-  //   const res = {
-  //     status: (statusCode) => {
-  //       expect(statusCode).to.equal(HTTP_UNPROCESSABLE_ENTITY_STATUS);
-  //       return res;
-  //     },
-  //     json: (data) => {
-  //       expect(data).to.deep.equal({ message: '"quantity" must be greater than or equal to 1' });
-  //       done();
-  //     },
-  //   };
-  //   const next = () => {};
+  it('a função quantityValidations retorna um erro se a quantidade não for válida', function (done) {
+    const req = { body: { quantity: 0 } };
+    const res = {
+      status: (statusCode) => {
+        expect(statusCode).to.equal(HTTP_UNPROCESSABLE_ENTITY_STATUS);
+        return res;
+      },
+      json: (data) => {
+        expect(data).to.deep.equal({ message: '"quantity" must be greater than or equal to 1' });
+        done();
+      },
+    };
+    const next = () => {};
 
-  //   salesMiddlewares.quantityValidations(req, res, next);
-  // });
+    salesMiddlewares.quantityValidations(req, res, next);
+  });
 });
