@@ -18,89 +18,132 @@ describe('No controller de products', function () {
     sinon.stub(productsService, 'getAll').resolves(productsMock.products);
 
     const res = {
-      status: (statusCode) => {
-        expect(statusCode).to.equal(HTTP_OK_STATUS);
-        return res;
-      },
-      json: (data) => {
-        expect(data).to.deep.equal(productsMock.products);
-      },
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+      // status: (statusCode) => {
+      //   expect(statusCode).to.equal(HTTP_OK_STATUS);
+      //   return res;
+      // },
+      // json: (data) => {
+      //   expect(data).to.deep.equal(productsMock.products);
+      // },
     };
 
     await productsController.getAll({}, res);
+
+    expect(res.status).to.have.been.calledWith(HTTP_OK_STATUS);
+    expect(res.json).to.have.been.calledWith(productsMock.products);
   });
   
   it('a função getById retorna o produto passado por parâmetro', async function () {
-    sinon.stub(productsService, 'getById').resolves({ id: 1, name: 'Produto 1' });
+    const productId = 1;
+    const productMock = productsMock.products[0];
+
+    sinon.stub(productsService, 'getById').resolves(productMock);
     
-    const req = { params: { id: 1 } };
+    const req = { params: { id: productId } };
+
     const res = {
-      status: (statusCode) => {
-        expect(statusCode).to.equal(HTTP_OK_STATUS);
-        return res;
-      },
-      json: (data) => {
-        expect(data).to.deep.equal({ id: 1, name: 'Produto 1' });
-      },
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+
+      // (statusCode) => {
+        // expect(statusCode).to.equal(HTTP_OK_STATUS);
+        // return res;
+      // },
+      // json: (data) => {
+      //   expect(data).to.deep.equal(productMock);
+      // },
     };
 
     await productsController.getById(req, res);
+
+    expect(res.status).to.have.been.calledWith(HTTP_OK_STATUS);
+    expect(res.json).to.have.been.calledWith(productMock);
   });
 
   it('a função registerProduct retorna o produto criado com o nome correto', async function () {
-    sinon.stub(productsService, 'registerProduct').resolves({ id: 1, name: 'produto' });
+    const productMock = productsMock.products[0];
+    const productName = 'Martelo de Thor';
+
+    sinon.stub(productsService, 'registerProduct').resolves(productMock);
   
-    const req = { body: { name: 'produto' } };
+    const req = { body: { name: productName } };
 
     const res = {
-      status: (statusCode) => {
-        expect(statusCode).to.equal(HTTP_CREATED_STATUS);
-        return res;
-      },
-      json: (data) => {
-        expect(data).to.deep.equal({ id: 1, name: 'produto' });
-      },
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+
+      // status: (statusCode) => {
+      //   expect(statusCode).to.equal(HTTP_CREATED_STATUS);
+      //   return res;
+      // },
+      // json: (data) => {
+      //   expect(data).to.deep.equal({ id: 1, name: 'produto' });
+      // },
     };
   
     await productsController.registerProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(HTTP_CREATED_STATUS);
+    expect(res.json).to.have.been.calledWith(productMock);
   });
 
   it('a função deleteProduct retorna o código http correto e não retorna mensagem', async function () {
+    const productId = 1;
+
     sinon.stub(productsService, 'deleteProduct').resolves();
   
-    const req = { params: { id: 1 } };
+    const req = { params: { id: productId } };
 
     const res = {
-      status: (statusCode) => {
-        expect(statusCode).to.equal(HTTP_NO_CONTENT_STATUS);
-        return res;
-      },
-      json: (data) => {
-        expect(data).to.deep.equal();
-      },
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+
+      // status: (statusCode) => {
+      //   expect(statusCode).to.equal(HTTP_NO_CONTENT_STATUS);
+      //   return res;
+      // },
+      // json: (data) => {
+      //   expect(data).to.deep.equal();
+      // },
     };
   
     await productsController.deleteProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(HTTP_NO_CONTENT_STATUS);
+    expect(res.json).to.have.been.calledWith();
   });
 
   it('a função updateProduct retorna o produto atualizado', async function () {
-    sinon.stub(productsService, 'getById').resolves({ id: 1, name: 'produto 2' });
+    const productMock = productsMock.products[0];
+    const productName = 'Martelo de Thor';
+    const productId = 1;
+
+    sinon.stub(productsService, 'getById').resolves(productMock);
+    sinon.stub(productsService, 'updateProduct').resolves(productMock);
   
     const req = { 
-      params: { id: 1 },
-      body: { name: 'produto 2' },
+      params: { id: productId },
+      body: { name: productName },
     };
 
     const res = {
-      status: (statusCode) => {
-        expect(statusCode).to.equal(HTTP_OK_STATUS);
-        return res;
-      },
-      json: (data) => {
-        expect(data).to.deep.equal({ id: 1, name: 'produto 2' });
-      },
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+
+      // status: (statusCode) => {
+      //   expect(statusCode).to.equal(HTTP_OK_STATUS);
+      //   return res;
+      // },
+      // json: (data) => {
+      //   expect(data).to.deep.equal({ id: 1, name: 'produto 2' });
+      // },
     };
   
     await productsController.updateProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(HTTP_OK_STATUS);
+    expect(res.json).to.have.been.calledWith(productMock);
   });
 });
