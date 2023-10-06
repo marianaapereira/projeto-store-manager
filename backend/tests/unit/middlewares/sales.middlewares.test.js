@@ -10,7 +10,9 @@ const salesMiddlewares = require('../../../src/middlewares/sales.middlewares');
 const salesService = require('../../../src/services/sales.service');
 const salesMock = require('../mocks/sales.mock');
 
-const { saleErrors } = salesMock;
+const productIdIsRequired = { message: '"productId" is required' };
+const quantityIsRequired = { message: '"quantity" is required' };
+const quantityMustBe = { message: '"quantity" must be greater than or equal to 1' };
 
 const { 
   HTTP_NOT_FOUND_STATUS, HTTP_BAD_REQUEST_STATUS, HTTP_UNPROCESSABLE_ENTITY_STATUS,
@@ -46,14 +48,14 @@ describe('Nos middlewares de sales', function () {
     const productId = 10;
 
     expect(() => salesMiddlewares.productIdExistenceCheck(productId)).to.not.throw();
-    expect(() => salesMiddlewares.productIdExistenceCheck()).to.throw(saleErrors.productIdIsRequired.message);
+    expect(() => salesMiddlewares.productIdExistenceCheck()).to.throw(productIdIsRequired.message);
   });
 
   it('a função quantityExistenceCheck faz as verificações corretas', function () {
     const quantity = 10;
 
     expect(() => salesMiddlewares.quantityExistenceCheck(quantity)).to.not.throw();
-    expect(() => salesMiddlewares.quantityExistenceCheck()).to.throw(saleErrors.quantityIsRequired.message);
+    expect(() => salesMiddlewares.quantityExistenceCheck()).to.throw(quantityIsRequired.message);
   });
 
   it('a função quantityValueCheck faz as verificações corretas', function () {
@@ -64,7 +66,7 @@ describe('Nos middlewares de sales', function () {
     expect(() => salesMiddlewares.quantityValueCheck(validEqualQuantity)).to.not.throw();
 
     const invalidQuantity = 0;
-    expect(() => salesMiddlewares.quantityValueCheck(invalidQuantity)).to.throw(saleErrors.quantityMustBe.message);
+    expect(() => salesMiddlewares.quantityValueCheck(invalidQuantity)).to.throw(quantityMustBe.message);
   });
 
   it('a função productInSaleValidation retorna erro se não encontrar a venda', function (done) {
@@ -78,9 +80,7 @@ describe('Nos middlewares de sales', function () {
         return res;
       },
       json: (data) => {
-        expect(data).to.deep.equal({
-          message: 'Sale not found',
-        });
+        expect(data).to.deep.equal({ message: 'Sale not found' });
         done();
       },
     };
@@ -101,9 +101,7 @@ describe('Nos middlewares de sales', function () {
         return res;
       },
       json: (data) => {
-        expect(data).to.deep.equal({
-          message: 'Product not found in sale',
-        });
+        expect(data).to.deep.equal({ message: 'Product not found in sale' });
         done();
       },
     };
@@ -134,7 +132,7 @@ describe('Nos middlewares de sales', function () {
         return res;
       },
       json: (data) => {
-        expect(data).to.deep.equal(saleErrors.productIdIsRequired);
+        expect(data).to.deep.equal({ message: '"productId" is required' });
         done();
       },
     };
@@ -165,7 +163,7 @@ describe('Nos middlewares de sales', function () {
         return res;
       },
       json: (data) => {
-        expect(data).to.deep.equal(saleErrors.quantityIsRequired);
+        expect(data).to.deep.equal(quantityIsRequired);
         done();
       },
     };
@@ -197,7 +195,7 @@ describe('Nos middlewares de sales', function () {
         return res;
       },
       json: (data) => {
-        expect(data).to.deep.equal(saleErrors.quantityMustBe);
+        expect(data).to.deep.equal(quantityMustBe);
         done();
       },
     };
@@ -216,7 +214,7 @@ describe('Nos middlewares de sales', function () {
         return res;
       },
       json: (data) => {
-        expect(data).to.deep.equal(saleErrors.quantityIsRequired);
+        expect(data).to.deep.equal(quantityIsRequired);
         done();
       },
     };
@@ -233,7 +231,7 @@ describe('Nos middlewares de sales', function () {
         return res;
       },
       json: (data) => {
-        expect(data).to.deep.equal(saleErrors.quantityMustBe);
+        expect(data).to.deep.equal(quantityMustBe);
         done();
       },
     };
