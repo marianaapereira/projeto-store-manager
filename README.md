@@ -10,12 +10,13 @@ Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua cr
 
 # Store Manager
 
-Projeto realizado com o objetivo de consolidar os estudos sobre desenvolvimento de APIs RESTful utilizando arquitetura em camadas.
+Projeto realizado com o objetivo de consolidar os estudos sobre desenvolvimento de APIs.
 
 ### Habilidades utilizadas no projeto:
 
 - interação com banco de dados relacional MySQL
-- implementação de APIs com arquitetura em camadas
+- implementação de APIs RESTful utilizando arquitetura em camadas (model, service, controller)
+- implementação de CRUD (create, read, update, delele)
 - criação de middlewares para validação dos dados recebidos
 - criação de testes para APIs com alta cobertura de código e alta cobertura de mutações
 
