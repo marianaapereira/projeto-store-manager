@@ -16,7 +16,7 @@ Projeto realizado com o objetivo de consolidar os estudos sobre desenvolvimento 
 
 - interação com banco de dados relacional MySQL
 - implementação de APIs RESTful utilizando arquitetura em camadas (model, service, controller)
-- implementação de CRUD (create, read, update, delele)
+- implementação de CRUD (create, read, update, delete)
 - criação de middlewares para validação dos dados recebidos
 - criação de testes para APIs com alta cobertura de código e alta cobertura de mutações
 
